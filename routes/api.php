@@ -20,4 +20,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => ['cors', 'json.response']], function () {
     // ...
+
+    //public routes
+    Route::post('/login', 'Auth\ApiAuthController@login')->name('login.api');
+    Route::post('/register', 'Auth\ApiAuthController@register')->name('register.api');
+
+});
+
+Route::middleware('auth:api')->group(function (){
+    // our routes to be protected will go in here
+    Route::post('/logout', 'Auth\ApiAuthController@logout')->name('logout.api');
 });
