@@ -22,6 +22,7 @@ class ApiAuthController extends Controller
         }
         $request['password']=Hash::make($request['password']);
         $request['remember_token'] = Str::random(10);
+
         $user = User::create($request->toArray());
         $token = $user->createToken('Laravel Password Grant Client')->accessToken;
         $response = ['token' => $token];
