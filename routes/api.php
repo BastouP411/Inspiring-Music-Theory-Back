@@ -32,13 +32,16 @@ Route::group(['middleware' => ['App\Http\Middleware\Cors', 'App\Http\Middleware\
 Route::middleware('auth:api')->group(function (){
     // our routes to be protected will go in here
 
-    Route::middleware('auth:api.admin')->group(function(){
-        Route::post('/logout', [Auth\ApiAuthController::class, 'logout'])->name('logout.api');
+    Route::middleware('api.admin')->group(function(){
+        // routes to be accessed ONLY by Admins (and SuperAdmins) will go in here
+
     });
 
     Route::middleware('auth:api.superAdmin')->group(function(){
+        // routes to be accessed by SuperAdmins ONLY will go in here
 
     });
 
     Route::post('/logout', [Auth\ApiAuthController::class, 'logout'])->name('logout.api');
+
 });
