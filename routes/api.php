@@ -23,7 +23,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['App\Http\Middleware\Cors', 'App\Http\Middleware\ForceJsonResponse']], function () {
     // ...
 
-    //public routes
+    //public data routes
+    Route::get('/schools', [\App\Http\Controllers\SchoolsController::class, 'get']);
+
+
+    //public auth routes
     Route::post('/login', [Auth\ApiAuthController::class, 'login'])->name('login.api');
     Route::post('/register', [Auth\ApiAuthController::class, 'register'])->name('register.api');
 
@@ -39,7 +43,7 @@ Route::middleware('auth:api')->group(function (){
 
     Route::middleware('auth:api.superAdmin')->group(function(){
         // routes to be accessed by SuperAdmins ONLY will go in here
-
+        Route::post('/schools', [\App\Http\Controllers\SchoolsController::class, 'store']);
     });
 
     Route::post('/logout', [Auth\ApiAuthController::class, 'logout'])->name('logout.api');
