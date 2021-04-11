@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChaptersTable extends Migration
+class CreateMinigamesQuizzesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,15 @@ class CreateChaptersTable extends Migration
      */
     public function up()
     {
-        Schema::create('chapters', function (Blueprint $table) {
+        Schema::create('minigames_quizzes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('associated_theme');
+            $table->unsignedBigInteger('chapter_id');
+            $table->foreign('chapter_id')
+                ->references('id')
+                ->on('chapters')
+                ->onDelete('restrict')
+                ->onUpdate('restrict');
             $table->timestamps();
         });
     }
@@ -28,6 +33,6 @@ class CreateChaptersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chapters');
+        Schema::dropIfExists('minigames_quizzes');
     }
 }

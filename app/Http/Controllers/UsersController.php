@@ -24,4 +24,16 @@ class UsersController extends Controller
             return response($response, 500);
         }
     }
+
+    public function getFullProfile(Request $request){
+        $userId = $request['id'];
+        $user = User::where('id', $userId);
+        $progression = [];
+        $eleve = [
+            'id' => $user['id'],
+            'nom' => $user['nom'],
+            'prenom' => $user['prenom'],
+            ];
+    }
+
 }

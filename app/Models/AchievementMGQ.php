@@ -5,17 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class School extends Model
+class AchievementMGQ extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'address',
+        'user_id',
+        'mgq_id',
+        'level',
+        'score',
+        'evaluated',
     ];
-
-    public function user(){
-        return $this->hasMany(User::class);
-    }
-
 }
