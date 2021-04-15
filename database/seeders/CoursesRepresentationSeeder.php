@@ -68,6 +68,7 @@ class CoursesRepresentationSeeder extends Seeder
             'id' => 1,
             'name' => 'Structure d\'une portée - entrainement',
             'chapter_id' => 1,
+            'nbr_trainings' => 1,
         ]);
         DB::table('minigames_quizzes')->insert([
             'id' => 2,
@@ -78,6 +79,7 @@ class CoursesRepresentationSeeder extends Seeder
             'id' => 3,
             'name' => 'Les nuances - entrainement',
             'chapter_id' => 2,
+            'nbr_trainings' => 1,
         ]);
         DB::table('minigames_quizzes')->insert([
             'id' => 4,
@@ -91,18 +93,31 @@ class CoursesRepresentationSeeder extends Seeder
         ]);
         DB::table('minigames_quizzes')->insert([
             'id' =>6,
-            'name' => 'Lecture de notes - mini-jeux',
+            'name' => 'Lecture de notes - entrainement',
+            'chapter_id' => 3,
+            'nbr_trainings' => 6,
+        ]);
+        DB::table('minigames_quizzes')->insert([
+            'id' =>7,
+            'name' => 'Lecture de notes - quiz',
             'chapter_id' => 3,
         ]);
         DB::table('minigames_quizzes')->insert([
-            'id' => 7,
-            'name' => 'Améliore ton rythme - mini-jeux',
+            'id' => 8,
+            'name' => 'Améliore ton rythme - entrainement',
+            'chapter_id' => 4,
+            'nbr_trainings' => 3,
+        ]);
+        DB::table('minigames_quizzes')->insert([
+            'id' => 9,
+            'name' => 'Améliore ton rythme - quiz',
             'chapter_id' => 4,
         ]);
         DB::table('minigames_quizzes')->insert([
-            'id' => 8,
-            'name' => 'Ecoute les instruments - Mini-jeu',
+            'id' => 10,
+            'name' => 'Ecoute les instruments - entrainement',
             'chapter_id' => 5,
+            'nbr_trainings' => 14,
         ]);
     }
 }

@@ -39,6 +39,7 @@ Route::group(['middleware' => ['App\Http\Middleware\Cors', 'App\Http\Middleware\
 Route::middleware('auth:api')->group(function (){
     // our routes to be protected will go in here
     Route::post('/logout', [Auth\ApiAuthController::class, 'logout'])->name('logout.api');
+    Route::post('/getFullUserProfile', [Controllers\UsersController::class, 'getFullProfile']);
     Route::post('/chapter', [AchievementsChaptersController::class, 'newEntry']);
     Route::post('/mgq', [AchievementsMGQController::class, 'newEntry']);
 

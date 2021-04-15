@@ -22,6 +22,7 @@ class CreateMinigamesQuizzesTable extends Migration
                 ->on('chapters')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
+            $table->unsignedSmallInteger('nbr_trainings')->nullable();
             $table->timestamps();
         });
     }
