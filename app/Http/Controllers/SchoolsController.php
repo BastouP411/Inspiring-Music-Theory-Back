@@ -13,7 +13,8 @@ class SchoolsController extends Controller
 
     public function store(Request $request){
         $this->validate($request, [
-            'name' => 'bail|required|unique:schools'
+            'name' => 'bail|required|unique:schools',
+            'address' => 'required'
         ]);
 
         $school = new \App\Models\School;

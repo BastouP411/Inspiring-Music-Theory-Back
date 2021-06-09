@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AchievementChapters;
+use App\Models\AchievementMGQ;
 use App\Models\MiniGameQuiz;
 use App\Models\User;
+use http\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -28,7 +32,11 @@ class UsersController extends Controller
     }
 
     public function getFullProfile(Request $request){
-        $userId = $request['user_id'];
+
+        if(isset($request['user_id'])){
+            $userId = $request['user_id'];
+        }
+        else $userId = $request->user()->id;
         $user = User::where('id', $userId)->first();
         $progression = [];
         $chapter = [];
@@ -37,6 +45,7 @@ class UsersController extends Controller
             'id' => $user->id,
             'nom' => $user->lastname,
             'prenom' => $user->name,
+            'type' => $user->type,
             ];
 
         //On récupère les résultats pour le cours sur les notes
@@ -46,12 +55,14 @@ class UsersController extends Controller
                 ->where('user_id', $userId)
                 ->where('MGQ_id', 6)
                 ->where('level', $i)
+                ->where('evaluated', 1)
                 ->first();
             array_push($entrainement, $score !== null);
         }
         $quizQuery = DB::table('achievement_m_g_q_s')
             ->where('user_id', $userId)
             ->where('MGQ_id', 7)
+            ->where('evaluated', 1)
             ->first();
         $quiz = $quizQuery!== null;
 
@@ -67,6 +78,7 @@ class UsersController extends Controller
             $score = DB::table('achievement_m_g_q_s')
                 ->where('user_id', $userId)
                 ->where('MGQ_id', 8)
+                ->where('evaluated', 1)
                 ->where('level', $i)
                 ->first();
             array_push($entrainement, $score !== null);
@@ -74,6 +86,7 @@ class UsersController extends Controller
         $quizQuery = DB::table('achievement_m_g_q_s')
             ->where('user_id', $userId)
             ->where('MGQ_id', 9)
+            ->where('evaluated', 1)
             ->first();
         $quiz = $quizQuery!== null;
 
@@ -90,12 +103,14 @@ class UsersController extends Controller
             $score = DB::table('achievement_m_g_q_s')
                 ->where('user_id', $userId)
                 ->where('MGQ_id', 3)
+                ->where('evaluated', 1)
                 ->where('level', $i)
                 ->first();
             array_push($entrainement, $score !== null);
         }
         $quizQuery = DB::table('achievement_m_g_q_s')
             ->where('user_id', $userId)
+            ->where('evaluated', 1)
             ->where('MGQ_id', 4)
             ->first();
         $quiz = $quizQuery!== null;
@@ -109,6 +124,7 @@ class UsersController extends Controller
             $score = DB::table('achievement_m_g_q_s')
                 ->where('user_id', $userId)
                 ->where('MGQ_id', 1)
+                ->where('evaluated', 1)
                 ->where('level', $i)
                 ->first();
             array_push($entrainement, $score !== null);
@@ -116,6 +132,7 @@ class UsersController extends Controller
         $quizQuery = DB::table('achievement_m_g_q_s')
             ->where('user_id', $userId)
             ->where('MGQ_id', 2)
+            ->where('evaluated', 1)
             ->first();
         $quiz = $quizQuery!== null;
 
@@ -141,6 +158,7 @@ class UsersController extends Controller
             $score = DB::table('achievement_m_g_q_s')
                 ->where('user_id', $userId)
                 ->where('MGQ_id', 10)
+                ->where('evaluated', 1)
                 ->where('level', $i)
                 ->first();
             array_push($entrainement, $score !== null);
@@ -151,6 +169,24 @@ class UsersController extends Controller
         $progression["chapter"] = $chapter;
         $eleve["progression"] = $progression;
         return response($eleve, 200);
+    }
+
+    public static function changePassword(Request $request){
+
+        if(!isset($request['email'])){
+            $user = User::where('id', $request->user()->id)->update(['password' => Hash::make($request['new_password'])]);
+            return response(['message' => 'Password changed successfully']);
+        }
+
+        $user = User::where('email', $request['email'])->update(['password' => Hash::make($request['new_password'])]);
+        return response(['message' => 'Password changed successfully']);
+    }
+
+    public static function deleteUser(Request $request){
+        AchievementChapters::where('user_id', $request['user_id'])->delete();
+        AchievementMGQ::where('user_id', $request['user_id'])->delete();
+        User::where('id', $request['user_id'])->delete();
+        return response(['message' => 'User deleted']);
     }
 
 }
